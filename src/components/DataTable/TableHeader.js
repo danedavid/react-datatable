@@ -4,12 +4,12 @@ const TableHeader = ({
   columns,
 }) => {
   return (
-    <thead>
-      <tr>
+    <thead className="dt-header">
+      <tr className="dt-row dt-header-row">
         {
           columns.map((column) => {
             return (
-              <th key={column.key}>
+              <th key={column.key} className="dt-cell dt-header-cell">
                 {column.label}
               </th>
             )

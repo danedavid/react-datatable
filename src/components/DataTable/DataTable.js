@@ -3,12 +3,14 @@ import React from 'react';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
+import './styles.scss';
+
 const DataTable = ({
   columns,
   rows,
 }) => {
   return (
-    <table>
+    <table className="dt-table">
       <TableHeader
         columns={columns}
       />

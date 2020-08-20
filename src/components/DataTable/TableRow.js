@@ -13,11 +13,11 @@ const TableRow = ({
   });
 
   return (
-    <tr>
+    <tr className="dt-row">
       {
         tableCells.map((data) => {
           return (
-            <td key={data.key}>
+            <td key={data.key} className="dt-cell dt-header-cell">
               {data.value}
             </td>
           );
