@@ -2,7 +2,10 @@ table.dt-table {
   background-color: white;
   border-radius: 2px;
   border-spacing: 0;
-  width: 100%;
+
+  &.dt-table--full-width {
+    width: 100%;
+  }
 
   tr.dt-row {
     border-collapse: collapse;

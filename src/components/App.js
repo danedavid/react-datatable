@@ -12,13 +12,16 @@ function App() {
           key: 'id',
           label: 'ID',
           numeric: true,
+          width: '10%',
         }, {
           key: 'name',
           label: 'Name',
+          width: '70%',
         }, {
           key: 'price',
           label: 'Price',
           numeric: true,
+          width: '20%',
         }]}
         rows={[{
           id: 1,

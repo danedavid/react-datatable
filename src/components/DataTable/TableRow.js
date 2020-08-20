@@ -8,6 +8,7 @@ const TableRow = ({
     return {
       value: row[column.key],
       key: `${column.key}-${row.id}`,
+      width: column.width || null,
       __columnMeta__: column,
     };
   });
@@ -16,8 +17,18 @@ const TableRow = ({
     <tr className="dt-row">
       {
         tableCells.map((data) => {
+          const styles = {};
+
+          if (data.width) {
+            styles.width = data.width;
+          }
+
           return (
-            <td key={data.key} className="dt-cell dt-header-cell">
+            <td
+              key={data.key}
+              className="dt-cell dt-header-cell"
+              style={{...styles}}
+            >
               {data.value}
             </td>
           );
