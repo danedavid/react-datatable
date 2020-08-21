@@ -4,6 +4,7 @@ table.dt-table {
   border-spacing: 0;
 
   &.dt-table--full-width {
+    table-layout: auto;
     width: 100%;
   }
 

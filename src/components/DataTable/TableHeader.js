@@ -2,10 +2,12 @@ import React from 'react';
 
 const TableHeader = ({
   columns,
+  selectCell: SelectCell,
 }) => {
   return (
     <thead className="dt-header">
       <tr className="dt-row dt-header-row">
+        <SelectCell />
         {
           columns.map((column) => {
             return (

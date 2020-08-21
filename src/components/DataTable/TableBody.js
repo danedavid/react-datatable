@@ -5,6 +5,7 @@ import TableRow from './TableRow';
 const TableBody = ({
   rows,
   columns,
+  selectCell,
 }) => {
   return (
     <tbody>
@@ -15,6 +16,7 @@ const TableBody = ({
               key={row.id}
               row={row}
               columns={columns}
+              selectCell={selectCell}
             />
           )
         })

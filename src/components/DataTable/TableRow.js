@@ -3,6 +3,7 @@ import React from 'react';
 const TableRow = ({
   row,
   columns,
+  selectCell: SelectCell,
 }) => {
   const tableCells = columns.map((column) => {
     return {
@@ -15,6 +16,7 @@ const TableRow = ({
 
   return (
     <tr className="dt-row">
+      <SelectCell rowId={row.id} />
       {
         tableCells.map((data) => {
           const styles = {};
@@ -26,7 +28,7 @@ const TableRow = ({
           return (
             <td
               key={data.key}
-              className="dt-cell dt-header-cell"
+              className="dt-cell"
               style={{...styles}}
             >
               {data.value}
