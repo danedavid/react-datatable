@@ -5,20 +5,33 @@ const TableHeader = ({
   selectCell: SelectCell,
 }) => {
   return (
-    <thead className="dt-header">
-      <tr className="dt-row dt-header-row">
+    <div className="dt-header">
+      <div className="dt-row dt-header-row">
         <SelectCell />
         {
           columns.map((column) => {
+            const styles = {};
+
+            if (column.width) {
+              styles.width = column.width;
+            } else {
+              const flexBasis = (100 / columns.length);
+              styles.flexBasis = `${flexBasis.toFixed(2)}%`;
+            }
+
             return (
-              <th key={column.key} className="dt-cell dt-header-cell">
+              <div
+                key={column.key}
+                className="dt-cell dt-header-cell"
+                style={{...styles}}
+              >
                 {column.label}
-              </th>
+              </div>
             )
           })
         }
-      </tr>
-    </thead>
+      </div>
+    </div>
   );
 };
 

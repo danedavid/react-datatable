@@ -30,7 +30,7 @@ const DataTable = ({
       SelectCell = () => null;
     } else if ( header ) {
       SelectCell = () => (
-        <th className="dt-cell dt-header-cell">
+        <div className="dt-cell dt-header-cell dt-cell--select">
           <input
             type="checkbox"
             checked={selectionProps.selectedKeys.length === rows.length}
@@ -42,12 +42,12 @@ const DataTable = ({
               );
             }}
           />
-        </th>
+        </div>
       );
     } else {
       SelectCell = ({ rowId }) => (
-        <td
-          className="dt-cell"
+        <div
+          className="dt-cell dt-cell--select"
         >
           <input
             type="checkbox"
@@ -65,7 +65,7 @@ const DataTable = ({
               );
             }}
           />
-        </td>
+        </div>
       );
     }
 
@@ -86,7 +86,7 @@ const DataTable = ({
   );
 
   return (
-    <table
+    <div
       className={classNames({
         "dt-table": true,
         "dt-table--full-width": !hasPixelWidthValues,
@@ -101,7 +101,7 @@ const DataTable = ({
         rows={rows}
         selectCell={SelectCell}
       />
-    </table>
+    </div>
   );
 };
 

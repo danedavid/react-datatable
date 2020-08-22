@@ -1,24 +1,24 @@
-table.dt-table {
+.dt-table {
   background-color: white;
   border-radius: 2px;
   border-spacing: 0;
+  display: inline-block;
 
   &.dt-table--full-width {
-    table-layout: auto;
-    width: 100%;
+    display: block;
   }
 
-  tr.dt-row {
-    border-collapse: collapse;
+  .dt-row {
+    display: flex;
 
-    & > td.dt-cell,
-    & > th.dt-cell {
+    & > .dt-cell,
+    & > .dt-cell {
       border-bottom: 0.5px solid #e0e0e0;
       padding: 12px 8px;
       text-align: left;
     }
 
-    &:last-child:not(.dt-header-row) > td.dt-cell {
+    &:last-child:not(.dt-header-row) > .dt-cell {
       border-bottom: none;
     }
   }

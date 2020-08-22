@@ -4,6 +4,7 @@ const TableRow = ({
   row,
   columns,
   selectCell: SelectCell,
+  reactWindowStyleObj,
 }) => {
   const tableCells = columns.map((column) => {
     return {
@@ -15,7 +16,10 @@ const TableRow = ({
   });
 
   return (
-    <tr className="dt-row">
+    <div
+      className="dt-row"
+      style={reactWindowStyleObj}
+    >
       <SelectCell rowId={row.id} />
       {
         tableCells.map((data) => {
@@ -23,20 +27,23 @@ const TableRow = ({
 
           if (data.width) {
             styles.width = data.width;
+          } else {
+            const flexBasis = (100 / columns.length);
+            styles.flexBasis = `${flexBasis.toFixed(2)}%`;
           }
 
           return (
-            <td
+            <div
               key={data.key}
               className="dt-cell"
               style={{...styles}}
             >
               {data.value}
-            </td>
+            </div>
           );
         })
       }
-    </tr>
+    </div>
   );
 };
 

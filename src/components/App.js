@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import DataTable from './DataTable';
 
 import './App.scss';
+import db from './data.json';
 
 function App() {
   const [selectable, setSelectable] = useState(true);
@@ -32,31 +33,7 @@ function App() {
           label: 'Price',
           numeric: true,
         }]}
-        rows={[{
-          id: 1,
-          price: 106800,
-          name: 'iPhone 11 Pro',
-        }, {
-          id: 2,
-          name: 'OnePlus 8 pro',
-          price: 54000,
-        }, {
-          id: 3,
-          name: 'OnePlus 7T pro',
-          price: 5000,
-        }, {
-          id: 4,
-          name: 'XYZ',
-          price: 54000,
-        }, {
-          id: 5,
-          name: 'Realme 8 pro',
-          price: 54000,
-        }, {
-          id: 6,
-          name: 'Redmi Note 8',
-          price: 54000,
-        }]}
+        rows={db.data}
       />
       <div style={{ marginTop: '20px' }}>
         <button onClick={() => setSelectable(!selectable)}>
@@ -64,7 +41,11 @@ function App() {
         </button>
         {selectable && <div>
           selected keys:
-          {selectedKeys.map(k => `${k} `)}
+          {
+            selectedKeys.length > 50
+            ? `Selected ${selectedKeys.length} keys`
+            : selectedKeys.map(k => `${k} `)
+          }
         </div>}
       </div>
     </div>
