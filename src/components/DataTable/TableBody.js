@@ -7,6 +7,7 @@ const TableBody = ({
   rows,
   columns,
   selectCell,
+  onRowClick,
 }) => {
   return (
     <List
@@ -24,6 +25,8 @@ const TableBody = ({
             row={row}
             columns={columns}
             selectCell={selectCell}
+            onRowClick={onRowClick}
+            rowIndex={index}
           />
         )
       }}

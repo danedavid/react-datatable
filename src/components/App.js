@@ -34,6 +34,9 @@ function App() {
           numeric: true,
         }]}
         rows={db.data}
+        onRowClick={(rowData, rowIndex) => {
+          console.log(rowData, rowIndex);
+        }}
       />
       <div style={{ marginTop: '20px' }}>
         <button onClick={() => setSelectable(!selectable)}>

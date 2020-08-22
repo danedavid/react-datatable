@@ -11,6 +11,10 @@
   .dt-row {
     display: flex;
 
+    &.dt-row--clickable {
+      cursor: pointer;
+    }
+
     & > .dt-cell,
     & > .dt-cell {
       border-bottom: 0.5px solid #e0e0e0;
@@ -20,6 +24,10 @@
 
     &:last-child:not(.dt-header-row) > .dt-cell {
       border-bottom: none;
+    }
+
+    &.dt-row--clickable:hover {
+      background-color: #f0f0f0;
     }
   }
 }

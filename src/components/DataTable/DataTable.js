@@ -13,6 +13,7 @@ const DataTable = ({
   rows,
   selectable,
   selection: selectionProps,
+  onRowClick,
 }) => {
   const hasPixelWidthValues = useMemo(
     () => columns.some((column) => (
@@ -100,6 +101,7 @@ const DataTable = ({
         columns={columns}
         rows={rows}
         selectCell={SelectCell}
+        onRowClick={onRowClick}
       />
     </div>
   );
