@@ -9,17 +9,13 @@ function App() {
   const [selectable, setSelectable] = useState(true);
   const [selectedKeys, setSelectedKeys] = useState([]);
 
-  const onChange = (keys) => {
-    setSelectedKeys(keys);
-  };
-
   return (
     <div className="table-container">
       <DataTable
         selectable={selectable}
-        selection={{
-          selectedKeys,
-          onChange,
+        selectedKeys={selectedKeys}
+        onSelectionChange={(selection) => {
+          setSelectedKeys(selection);
         }}
         columns={[{
           key: 'id',

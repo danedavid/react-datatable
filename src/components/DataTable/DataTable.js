@@ -12,7 +12,8 @@ const DataTable = ({
   columns,
   rows,
   selectable,
-  selection: selectionProps,
+  selectedKeys,
+  onSelectionChange,
   onRowClick,
 }) => {
   const hasPixelWidthValues = useMemo(
@@ -34,12 +35,13 @@ const DataTable = ({
         <div className="dt-cell dt-header-cell dt-cell--select">
           <input
             type="checkbox"
-            checked={selectionProps.selectedKeys.length === rows.length}
+            checked={selectedKeys.length === rows.length}
+            onClick={(ev) => ev.stopPropagation()}
             onChange={(ev) => {
-              selectionProps.onChange(
+              onSelectionChange(
                 ev.target.checked
                   ? rows.map((row) => row.id)
-                  : []
+                  : [],
               );
             }}
           />
@@ -52,17 +54,18 @@ const DataTable = ({
         >
           <input
             type="checkbox"
-            checked={selectionProps.selectedKeys.includes(rowId)}
+            checked={selectedKeys.includes(rowId)}
+            onClick={(ev) => ev.stopPropagation()}
             onChange={(ev) => {
-              selectionProps.onChange(
+              onSelectionChange(
                 ev.target.checked
                   ? ([
-                    ...selectionProps.selectedKeys,
+                    ...selectedKeys,
                     rowId,
                   ])
-                  : selectionProps.selectedKeys.filter(
+                  : selectedKeys.filter(
                     key => key !== rowId
-                  )
+                  ),
               );
             }}
           />
@@ -73,7 +76,8 @@ const DataTable = ({
     return SelectCell;
   }, [
     selectable,
-    selectionProps,
+    selectedKeys,
+    onSelectionChange,
     rows,
   ]);
 
