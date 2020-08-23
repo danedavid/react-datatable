@@ -1,106 +1,83 @@
-import React, { useState } from 'react';
-
+import React, { useState, useMemo } from 'react';
 import DataTable from './DataTable';
-
 import './App.scss';
-import db from './data.json';
 
-const PAGE_SIZE = 100;
+const fetchData = async (albumId) =>
+  window.fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
+    .then(res => res.json());
 
-const mockApi = (pageNo) => new Promise((res, rej) => {
-  setTimeout(() => {
-    const start = ((pageNo - 1) * PAGE_SIZE);
-    const end = pageNo * PAGE_SIZE;
-    res({
-      data: db.data.slice(start, end),
-      count: db.data.length,
-    });
-  }, 2000);
-})
+const PAGE_SIZE = 50;
+const TOTAL_COUNT = 5000;
 
-function App() {
-  const [selectable, setSelectable] = useState(true);
+const App = () => {
   const [selectedKeys, setSelectedKeys] = useState([]);
-  const [data, setData] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
+  const [photos, setPhotos] = useState([]);
 
-  const loadData = async (pageNo) => {
-    const res = await mockApi(pageNo);
-    setData(prevData => [
-      ...prevData,
-      ...res.data,
+  const tableColumns = useMemo(
+    () => ([{
+      key: 'id',
+      label: 'ID',
+    }, {
+      key: 'title',
+      label: 'Title',
+    }, {
+      key: 'thumbnail',
+      label: 'Thumbnail',
+    }, {
+      key: 'url',
+      label: 'URL',
+    }, {
+      key: 'albumId',
+      label: 'Album ID',
+      numeric: true,
+    }]),
+    [],
+  );
+
+  const tableRows = useMemo(
+    () => photos.map((photo) => ({
+      ...photo,
+      thumbnail: (
+        <img
+          alt="thumbnail"
+          src={photo.thumbnailUrl}
+          height="100"
+          width="100"
+        />
+      )
+    })),
+    [photos],
+  );
+
+  const loadData = async (albumId) => {
+    const res = await fetchData(albumId);
+    setPhotos(prev => [
+      ...prev,
+      ...res,
     ]);
-    if (totalCount === 0) {
-      setTotalCount(res.count);
-    }
   };
 
   return (
     <div className="table-container">
       <DataTable
-        selectable={selectable}
+        selectable
         selectedKeys={selectedKeys}
         onSelectionChange={(selection) => {
           setSelectedKeys(selection);
         }}
-        columns={[{
-          key: 'id',
-          label: 'ID',
-        }, {
-          key: 'name',
-          label: 'Name',
-        }, {
-          key: 'price',
-          label: 'Price',
-          numeric: true,
-        }]}
-        rows={data}
+        columns={tableColumns}
+        rows={tableRows}
         onRowClick={(rowData, rowIndex) => {
           console.log(rowData, rowIndex);
         }}
         infiniteLoading={{
           loadMoreData: loadData,
           pageSize: PAGE_SIZE,
-          totalRowCount: totalCount || 1000,
-        }}
-      />
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={() => setSelectable(!selectable)}>
-          Selection: {selectable ? 'ON' : 'OFF'}
-        </button>
-        {selectable && <div>
-          selected keys:
-          {
-            selectedKeys.length > 50
-            ? `Selected ${selectedKeys.length} keys`
-            : selectedKeys.map(k => `${k} `)
-          }
-        </div>}
-      </div>
-      <DataTable
-        columns={[{
-          key: 'someIdKey',
-          label: 'Some ID',
-        }, {
-          key: 'name',
-          label: 'Name',
-        }, {
-          key: 'price',
-          label: 'Price',
-          numeric: true,
-        }]}
-        rows={db.data.map(item => ({
-          name: item.name,
-          price: item.price,
-          someIdKey: item.id,
-        }))}
-        rowKey="someIdKey"
-        onRowClick={(rowData, rowIndex) => {
-          console.log(rowData, rowIndex);
+          totalRowCount: TOTAL_COUNT,
         }}
       />
     </div>
-  );
+);
 }
 
 export default App;
