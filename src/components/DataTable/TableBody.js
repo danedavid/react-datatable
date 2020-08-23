@@ -19,6 +19,7 @@ const PAGE_STATUS = {
 const TableBody = ({
   rows,
   columns,
+  rowKey,
   selectCell,
   onRowClick,
   infiniteLoading,
@@ -119,6 +120,7 @@ const TableBody = ({
             <TableRow
               row={row}
               columns={columns}
+              rowKey={rowKey}
               selectCell={selectCell}
               onRowClick={onRowClick}
               rowIndex={index}
@@ -160,6 +162,7 @@ const TableBody = ({
 TableBody.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rowKey: PropTypes.string.isRequired,
   selectCell: PropTypes.elementType.isRequired,
   onRowClick: PropTypes.func,
   infiniteLoading: PropTypes.bool.isRequired,

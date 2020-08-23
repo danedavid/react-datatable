@@ -80,8 +80,8 @@ function App() {
       </div>
       <DataTable
         columns={[{
-          key: 'id',
-          label: 'ID',
+          key: 'someIdKey',
+          label: 'Some ID',
           numeric: true,
         }, {
           key: 'name',
@@ -91,7 +91,12 @@ function App() {
           label: 'Price',
           numeric: true,
         }]}
-        rows={db.data}
+        rows={db.data.map(item => ({
+          name: item.name,
+          price: item.price,
+          someIdKey: item.id,
+        }))}
+        rowKey="someIdKey"
         onRowClick={(rowData, rowIndex) => {
           console.log(rowData, rowIndex);
         }}

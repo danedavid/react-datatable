@@ -12,6 +12,7 @@ const WIDTH_PX_REGEX = /^[1-9]{1}(\d)*px$/;
 const DataTable = ({
   columns,
   rows,
+  rowKey,
   selectable,
   selectedKeys,
   onSelectionChange,
@@ -20,7 +21,7 @@ const DataTable = ({
     totalRowCount,
     loadMoreData,
     pageSize,
-  }
+  },
 }) => {
   const hasPixelWidthValues = useMemo(
     () => columns.some((column) => (
@@ -46,7 +47,7 @@ const DataTable = ({
             onChange={(ev) => {
               onSelectionChange(
                 ev.target.checked
-                  ? rows.map((row) => row.id)
+                  ? rows.map((row) => row[rowKey])
                   : [],
               );
             }}
@@ -85,6 +86,7 @@ const DataTable = ({
     selectedKeys,
     onSelectionChange,
     rows,
+    rowKey,
   ]);
 
   const SelectCell = useMemo(
@@ -110,6 +112,7 @@ const DataTable = ({
       <TableBody
         columns={columns}
         rows={rows}
+        rowKey={rowKey}
         selectCell={SelectCell}
         onRowClick={onRowClick}
         infiniteLoading={Boolean(totalRowCount && loadMoreData && pageSize)}
@@ -136,11 +139,13 @@ DataTable.propTypes = {
     loadMoreData: PropTypes.func,
     pageSize: PropTypes.number,
   }),
+  rowKey: PropTypes.string,
 };
 
 DataTable.defaultProps = {
   selectable: false,
   infiniteLoading: {},
+  rowKey: 'id',
 };
 
 export default DataTable;

@@ -5,6 +5,7 @@ import classNames from 'classnames';
 const TableRow = ({
   row,
   columns,
+  rowKey,
   selectCell: SelectCell,
   reactWindowStyleObj,
   onRowClick = null,
@@ -14,10 +15,12 @@ const TableRow = ({
 }) => {
   const rowRef = useRef();
 
+  const rowId = row[rowKey];
+
   const tableCells = columns.map((column) => {
     return {
       value: row[column.key],
-      key: `${column.key}-${row.id}`,
+      key: `${column.key}-${rowId}`,
       width: column.width || null,
       __columnMeta__: column,
     };
@@ -48,7 +51,7 @@ const TableRow = ({
           onRowClick(row, rowIndex);
         }}
       >
-        <SelectCell rowId={row.id} />
+        <SelectCell rowId={rowId} />
         {
           tableCells.map((data) => {
             const styles = {};
@@ -79,6 +82,7 @@ const TableRow = ({
 TableRow.propTypes = {
   row: PropTypes.object,
   columns: PropTypes.array.isRequired,
+  rowKey: PropTypes.string.isRequired,
   selectCell: PropTypes.elementType.isRequired,
   reactWindowStyleObj: PropTypes.object.isRequired,
   onRowClick: PropTypes.func,
