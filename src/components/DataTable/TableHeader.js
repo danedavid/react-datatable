@@ -6,8 +6,8 @@ const TableHeader = ({
   selectCell: SelectCell,
 }) => {
   return (
-    <div className="dt-header">
-      <div className="dt-row dt-header-row">
+    <div className="dt-header" role="rowgroup">
+      <div className="dt-row dt-header-row" role="row">
         <SelectCell />
         {
           columns.map((column) => {
@@ -24,6 +24,7 @@ const TableHeader = ({
               <div
                 key={column.key}
                 className="dt-cell dt-header-cell"
+                role="columnheader"
                 style={{...styles}}
               >
                 {column.label}

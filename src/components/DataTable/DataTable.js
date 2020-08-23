@@ -39,46 +39,62 @@ const DataTable = ({
     if ( !selectable ) {
       SelectCell = () => null;
     } else if ( header ) {
-      SelectCell = () => (
-        <div className="dt-cell dt-header-cell dt-cell--select">
-          <input
-            type="checkbox"
-            checked={rows.length > 0 && selectedKeys.length === rows.length}
-            onClick={(ev) => ev.stopPropagation()}
-            onChange={(ev) => {
-              onSelectionChange(
-                ev.target.checked
-                  ? rows.map((row) => row[rowKey])
-                  : [],
-              );
-            }}
-          />
-        </div>
-      );
+      SelectCell = () => {
+        const checked = rows.length > 0 && selectedKeys.length === rows.length;
+
+        return (
+          <div
+            className="dt-cell dt-header-cell dt-cell--select"
+            role="columnheader"
+          >
+            <input
+              type="checkbox"
+              checked={checked}
+              aria-checked={checked}
+              aria-label="Select All"
+              onClick={(ev) => ev.stopPropagation()}
+              onChange={(ev) => {
+                onSelectionChange(
+                  ev.target.checked
+                    ? rows.map((row) => row[rowKey])
+                    : [],
+                );
+              }}
+            />
+          </div>
+        );
+      };
     } else {
-      SelectCell = ({ rowId }) => (
-        <div
-          className="dt-cell dt-cell--select"
-        >
-          <input
-            type="checkbox"
-            checked={selectedKeys.includes(rowId)}
-            onClick={(ev) => ev.stopPropagation()}
-            onChange={(ev) => {
-              onSelectionChange(
-                ev.target.checked
-                  ? ([
-                    ...selectedKeys,
-                    rowId,
-                  ])
-                  : selectedKeys.filter(
-                    key => key !== rowId
-                  ),
-              );
-            }}
-          />
-        </div>
-      );
+      SelectCell = ({ rowId }) => {
+        const checked = selectedKeys.includes(rowId);
+
+        return (
+          <div
+            className="dt-cell dt-cell--select"
+            role="cell"
+          >
+            <input
+              type="checkbox"
+              checked={checked}
+              aria-checked={checked}
+              aria-label="Select Row"
+              onClick={(ev) => ev.stopPropagation()}
+              onChange={(ev) => {
+                onSelectionChange(
+                  ev.target.checked
+                    ? ([
+                      ...selectedKeys,
+                      rowId,
+                    ])
+                    : selectedKeys.filter(
+                      key => key !== rowId
+                    ),
+                );
+              }}
+            />
+          </div>
+        );
+      };
     }
 
     return SelectCell;
@@ -105,6 +121,7 @@ const DataTable = ({
         "dt-table": true,
         "dt-table--full-width": !hasPixelWidthValues,
       })}
+      role="grid"
     >
       <TableHeader
         columns={columns}

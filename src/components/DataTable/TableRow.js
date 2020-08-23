@@ -36,7 +36,7 @@ const TableRow = ({
   }, [hasComputedSize, setSizeForWindowing, rowIndex]);
 
   return (
-    <div style={reactWindowStyleObj}>
+    <div style={reactWindowStyleObj} role="none">
       {/*
         Two divs: outer receives the initial 50px from VariableSizeList.
         Inner div renders with actual height of elem, and sets height in
@@ -51,6 +51,7 @@ const TableRow = ({
         onClick={() => {
           onRowClick(row, rowIndex);
         }}
+        role="row"
       >
         <SelectCell rowId={rowId} />
         {
@@ -71,6 +72,7 @@ const TableRow = ({
                   "dt-cell": true,
                   "dt-cell--numeric": data.numeric,
                 })}
+                role="cell"
                 style={{...styles}}
               >
                 {data.value}

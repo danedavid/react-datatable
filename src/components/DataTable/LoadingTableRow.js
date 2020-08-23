@@ -8,6 +8,7 @@ const LoadingTableRow = ({
     <div style={reactWindowStyleObj}>
       <div
         className="dt-row dt-row--loading"
+        role="row"
       >
         <span className="dt-loading-span" />
         <span className="dt-loading-span" />
