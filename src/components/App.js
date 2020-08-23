@@ -2,9 +2,8 @@ import React, { useState, useMemo } from 'react';
 import DataTable from './DataTable';
 import './App.scss';
 
-const fetchData = async (albumId) =>
-  window.fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
-    .then(res => res.json());
+const fetchData = async (albumId) => window.fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
+  .then((res) => res.json());
 
 const PAGE_SIZE = 50;
 const TOTAL_COUNT = 5000;
@@ -46,14 +45,14 @@ const App = () => {
             width="80"
           />
         </div>
-      )
+      ),
     })),
     [photos],
   );
 
   const loadData = async (albumId) => {
     const res = await fetchData(albumId);
-    setPhotos(prev => [
+    setPhotos((prev) => [
       ...prev,
       ...res,
     ]);
@@ -79,7 +78,7 @@ const App = () => {
         }}
       />
     </div>
-);
-}
+  );
+};
 
 export default App;

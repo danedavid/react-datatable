@@ -17,20 +17,18 @@ const TableRow = ({
 
   const rowId = row[rowKey];
 
-  const tableCells = columns.map((column) => {
-    return {
-      value: row[column.key],
-      key: `${column.key}-${rowId}`,
-      width: column.width || null,
-      numeric: column.numeric,
-      __columnMeta__: column,
-    };
-  });
+  const tableCells = columns.map((column) => ({
+    value: row[column.key],
+    key: `${column.key}-${rowId}`,
+    width: column.width || null,
+    numeric: column.numeric,
+    __columnMeta__: column,
+  }));
 
   useEffect(() => {
     if (!hasComputedSize) {
       // set height for windowing
-      const height = rowRef.current.getBoundingClientRect().height
+      const { height } = rowRef.current.getBoundingClientRect();
       setSizeForWindowing(rowIndex, height);
     }
   }, [hasComputedSize, setSizeForWindowing, rowIndex]);
@@ -42,16 +40,18 @@ const TableRow = ({
         Inner div renders with actual height of elem, and sets height in
         parent cache, which then is passed to the outer div.
       */}
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <div
         ref={rowRef}
         className={classNames({
-          "dt-row": true,
-          "dt-row--clickable": Boolean(onRowClick),
+          'dt-row': true,
+          'dt-row--clickable': Boolean(onRowClick),
         })}
         onClick={() => {
           onRowClick(row, rowIndex);
         }}
         role="row"
+        tabIndex={0}
       >
         <SelectCell rowId={rowId} />
         {
@@ -69,11 +69,11 @@ const TableRow = ({
               <div
                 key={data.key}
                 className={classNames({
-                  "dt-cell": true,
-                  "dt-cell--numeric": data.numeric,
+                  'dt-cell': true,
+                  'dt-cell--numeric': data.numeric,
                 })}
                 role="cell"
-                style={{...styles}}
+                style={{ ...styles }}
               >
                 {data.value}
               </div>
@@ -86,19 +86,17 @@ const TableRow = ({
 };
 
 TableRow.propTypes = {
-  row: PropTypes.object,
-  columns: PropTypes.array.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  row: PropTypes.object.isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   rowKey: PropTypes.string.isRequired,
   selectCell: PropTypes.elementType.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   reactWindowStyleObj: PropTypes.object.isRequired,
-  onRowClick: PropTypes.func,
+  onRowClick: PropTypes.func.isRequired,
   rowIndex: PropTypes.number.isRequired,
   setSizeForWindowing: PropTypes.func.isRequired,
   hasComputedSize: PropTypes.bool.isRequired,
-};
-
-TableRow.defaultProps = {
-  onRowClick: () => {},
 };
 
 export default TableRow;

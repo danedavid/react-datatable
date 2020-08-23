@@ -31,6 +31,7 @@ const DataTable = ({
 }) => {
   // maintain if all rows are selected
   const allSelected = useRef(false);
+  // eslint-disable-next-line no-underscore-dangle
   const _onSelectionChange = useCallback((sel) => {
     if (sel.length === rows.length) {
       allSelected.current = true;
@@ -44,19 +45,19 @@ const DataTable = ({
   // if allSelected is true
   useEffect(() => {
     if (
-      allSelected.current &&
-      selectedKeys.length !== rows.length
+      allSelected.current
+      && selectedKeys.length !== rows.length
     ) {
       _onSelectionChange(
-        rows.map((row) => row[rowKey])
+        rows.map((row) => row[rowKey]),
       );
     }
   }, [selectedKeys, rows, rowKey, _onSelectionChange]);
 
   const hasPixelWidthValues = useMemo(
     () => columns.some((column) => (
-      typeof column.width === 'string' &&
-      WIDTH_PX_REGEX.test(column.width.trim())
+      typeof column.width === 'string'
+      && WIDTH_PX_REGEX.test(column.width.trim())
     )),
     [columns],
   );
@@ -65,9 +66,9 @@ const DataTable = ({
     header = false,
   } = {}) => {
     let SelectCell;
-    if ( !selectable ) {
+    if (!selectable) {
       SelectCell = () => null;
-    } else if ( header ) {
+    } else if (header) {
       SelectCell = () => {
         const checked = rows.length > 0 && selectedKeys.length === rows.length;
 
@@ -94,6 +95,7 @@ const DataTable = ({
         );
       };
     } else {
+      // eslint-disable-next-line react/prop-types
       SelectCell = ({ rowId }) => {
         const checked = selectedKeys.includes(rowId);
 
@@ -116,7 +118,7 @@ const DataTable = ({
                       rowId,
                     ])
                     : selectedKeys.filter(
-                      key => key !== rowId
+                      (key) => key !== rowId,
                     ),
                 );
               }}
@@ -137,18 +139,18 @@ const DataTable = ({
 
   const SelectCell = useMemo(
     () => getSelectCell(),
-    [getSelectCell]
+    [getSelectCell],
   );
   const HeaderSelectCell = useMemo(
     () => getSelectCell({ header: true }),
-    [getSelectCell]
+    [getSelectCell],
   );
 
   return (
     <div
       className={classNames({
-        "dt-table": true,
-        "dt-table--full-width": !hasPixelWidthValues,
+        'dt-table': true,
+        'dt-table--full-width': !hasPixelWidthValues,
       })}
       role="grid"
     >
@@ -196,6 +198,9 @@ DataTable.defaultProps = {
   infiniteLoading: {},
   rowKey: 'id',
   height: 500,
+  selectedKeys: [],
+  onSelectionChange: () => {},
+  onRowClick: () => {},
 };
 
 export default DataTable;
