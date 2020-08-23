@@ -38,12 +38,14 @@ const App = () => {
     () => photos.map((photo) => ({
       ...photo,
       thumbnail: (
-        <img
-          alt="thumbnail"
-          src={photo.thumbnailUrl}
-          height="100"
-          width="100"
-        />
+        <div className="img-wrapper">
+          <img
+            alt="thumbnail"
+            src={photo.thumbnailUrl}
+            height="80"
+            width="80"
+          />
+        </div>
       )
     })),
     [photos],

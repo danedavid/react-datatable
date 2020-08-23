@@ -26,6 +26,7 @@ const TableBody = ({
   totalRowCount,
   loadMoreData,
   pageSize,
+  height,
 }) => {
   const [sizeMap, setSizeMap] = useState({});
 
@@ -80,11 +81,13 @@ const TableBody = ({
   };
 
   const loadMoreItems = (startIndex, endIndex) => {
-    const startIndexPage = Math.floor(startIndex / pageSize) + 1;
     const endIndexPage = Math.floor(endIndex / pageSize) + 1;
 
-    pushToQueue(startIndexPage);
-    pushToQueue(endIndexPage);
+    // If scrolling to random location, load all
+    // rows until that point, in order
+    for ( let pNo = 1; pNo <= endIndexPage; pNo++ ) {
+      pushToQueue(pNo);
+    }
   };
 
   const renderVirtualizedList = ({
@@ -99,10 +102,11 @@ const TableBody = ({
     return (
       <List
         ref={ref}
-        height={240}
+        height={height}
         itemCount={totalRowCount}
         itemSize={(idx) => sizeMap[idx] || 50}
         width="100%"
+        overscanCount={2}
         {...infiniteLoadingProps}
       >
         {({ index, style }) => {
@@ -169,6 +173,7 @@ TableBody.propTypes = {
   totalRowCount: PropTypes.number.isRequired,
   loadMoreData: PropTypes.func,
   pageSize: PropTypes.number,
+  height: PropTypes.number.isRequired,
 };
 
 export default TableBody;

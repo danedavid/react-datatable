@@ -22,6 +22,7 @@ const DataTable = ({
     loadMoreData,
     pageSize,
   },
+  height,
 }) => {
   const hasPixelWidthValues = useMemo(
     () => columns.some((column) => (
@@ -119,6 +120,7 @@ const DataTable = ({
         totalRowCount={totalRowCount || rows.length}
         loadMoreData={loadMoreData}
         pageSize={pageSize}
+        height={height}
       />
     </div>
   );
@@ -140,12 +142,14 @@ DataTable.propTypes = {
     pageSize: PropTypes.number,
   }),
   rowKey: PropTypes.string,
+  height: PropTypes.number,
 };
 
 DataTable.defaultProps = {
   selectable: false,
   infiniteLoading: {},
   rowKey: 'id',
+  height: 500,
 };
 
 export default DataTable;
