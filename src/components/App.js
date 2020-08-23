@@ -46,6 +46,15 @@ const App = () => {
           />
         </div>
       ),
+      url: (
+        <a
+          href={photo.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {photo.url}
+        </a>
+      ),
     })),
     [photos],
   );
