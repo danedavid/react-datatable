@@ -32,6 +32,10 @@
       word-break: break-all;
       display: flex;
       align-items: center;
+
+      &.dt-cell--numeric {
+        justify-content: flex-end;
+      }
     }
 
     &:last-child:not(.dt-header-row) > .dt-cell {

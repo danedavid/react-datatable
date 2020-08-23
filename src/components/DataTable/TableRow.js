@@ -22,6 +22,7 @@ const TableRow = ({
       value: row[column.key],
       key: `${column.key}-${rowId}`,
       width: column.width || null,
+      numeric: column.numeric,
       __columnMeta__: column,
     };
   });
@@ -66,7 +67,10 @@ const TableRow = ({
             return (
               <div
                 key={data.key}
-                className="dt-cell"
+                className={classNames({
+                  "dt-cell": true,
+                  "dt-cell--numeric": data.numeric,
+                })}
                 style={{...styles}}
               >
                 {data.value}

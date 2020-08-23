@@ -46,7 +46,6 @@ function App() {
         columns={[{
           key: 'id',
           label: 'ID',
-          numeric: true,
         }, {
           key: 'name',
           label: 'Name',
@@ -82,7 +81,6 @@ function App() {
         columns={[{
           key: 'someIdKey',
           label: 'Some ID',
-          numeric: true,
         }, {
           key: 'name',
           label: 'Name',
