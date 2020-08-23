@@ -1,4 +1,9 @@
-import React, { useMemo, useCallback } from 'react';
+import React, {
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -24,6 +29,30 @@ const DataTable = ({
   },
   height,
 }) => {
+  // maintain if all rows are selected
+  const allSelected = useRef(false);
+  const _onSelectionChange = useCallback((sel) => {
+    if (sel.length === rows.length) {
+      allSelected.current = true;
+    } else {
+      allSelected.current = false;
+    }
+    onSelectionChange(sel);
+  }, [onSelectionChange, rows]);
+
+  // on adding rows, make them selected by default
+  // if allSelected is true
+  useEffect(() => {
+    if (
+      allSelected.current &&
+      selectedKeys.length !== rows.length
+    ) {
+      _onSelectionChange(
+        rows.map((row) => row[rowKey])
+      );
+    }
+  }, [selectedKeys, rows, rowKey, _onSelectionChange]);
+
   const hasPixelWidthValues = useMemo(
     () => columns.some((column) => (
       typeof column.width === 'string' &&
@@ -54,7 +83,7 @@ const DataTable = ({
               aria-label="Select All"
               onClick={(ev) => ev.stopPropagation()}
               onChange={(ev) => {
-                onSelectionChange(
+                _onSelectionChange(
                   ev.target.checked
                     ? rows.map((row) => row[rowKey])
                     : [],
@@ -80,7 +109,7 @@ const DataTable = ({
               aria-label="Select Row"
               onClick={(ev) => ev.stopPropagation()}
               onChange={(ev) => {
-                onSelectionChange(
+                _onSelectionChange(
                   ev.target.checked
                     ? ([
                       ...selectedKeys,
@@ -101,7 +130,7 @@ const DataTable = ({
   }, [
     selectable,
     selectedKeys,
-    onSelectionChange,
+    _onSelectionChange,
     rows,
     rowKey,
   ]);

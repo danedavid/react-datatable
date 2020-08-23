@@ -8,7 +8,7 @@ const TableRow = ({
   rowKey,
   selectCell: SelectCell,
   reactWindowStyleObj,
-  onRowClick = null,
+  onRowClick,
   rowIndex,
   setSizeForWindowing,
   hasComputedSize,
