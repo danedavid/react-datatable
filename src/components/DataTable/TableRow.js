@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const TableRow = ({
@@ -44,9 +45,7 @@ const TableRow = ({
           "dt-row--clickable": Boolean(onRowClick),
         })}
         onClick={() => {
-          if (onRowClick) {
-            onRowClick(row, rowIndex);
-          }
+          onRowClick(row, rowIndex);
         }}
       >
         <SelectCell rowId={row.id} />
@@ -75,6 +74,21 @@ const TableRow = ({
       </div>
     </div>
   );
+};
+
+TableRow.propTypes = {
+  row: PropTypes.object,
+  columns: PropTypes.array.isRequired,
+  selectCell: PropTypes.elementType.isRequired,
+  reactWindowStyleObj: PropTypes.object.isRequired,
+  onRowClick: PropTypes.func,
+  rowIndex: PropTypes.number.isRequired,
+  setSizeForWindowing: PropTypes.func.isRequired,
+  hasComputedSize: PropTypes.bool.isRequired,
+};
+
+TableRow.defaultProps = {
+  onRowClick: () => {},
 };
 
 export default TableRow;

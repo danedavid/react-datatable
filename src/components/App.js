@@ -78,6 +78,24 @@ function App() {
           }
         </div>}
       </div>
+      <DataTable
+        columns={[{
+          key: 'id',
+          label: 'ID',
+          numeric: true,
+        }, {
+          key: 'name',
+          label: 'Name',
+        }, {
+          key: 'price',
+          label: 'Price',
+          numeric: true,
+        }]}
+        rows={db.data}
+        onRowClick={(rowData, rowIndex) => {
+          console.log(rowData, rowIndex);
+        }}
+      />
     </div>
   );
 }

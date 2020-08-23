@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
+import PropTypes from 'prop-types';
 import { VariableSizeList as List } from 'react-window';
 import InfiniteLoader from "react-window-infinite-loader";
 
@@ -20,6 +21,7 @@ const TableBody = ({
   columns,
   selectCell,
   onRowClick,
+  infiniteLoading,
   totalRowCount,
   loadMoreData,
   pageSize,
@@ -84,6 +86,58 @@ const TableBody = ({
     pushToQueue(endIndexPage);
   };
 
+  const renderVirtualizedList = ({
+    ref,
+    onItemsRendered,
+  } = {}) => {
+    const infiniteLoadingProps = {};
+    if (infiniteLoading) {
+      infiniteLoadingProps.onItemsRendered = onItemsRendered;
+    }
+
+    return (
+      <List
+        ref={ref}
+        height={240}
+        itemCount={totalRowCount}
+        itemSize={(idx) => sizeMap[idx] || 50}
+        width="100%"
+        {...infiniteLoadingProps}
+      >
+        {({ index, style }) => {
+          // if row is not loaded yet, render placeholder
+          if ( index >= rows.length ) {
+            return (
+              <LoadingTableRow
+                reactWindowStyleObj={style}
+              />
+            );
+          }
+
+          const row = rows[index];
+          return (
+            <TableRow
+              row={row}
+              columns={columns}
+              selectCell={selectCell}
+              onRowClick={onRowClick}
+              rowIndex={index}
+              reactWindowStyleObj={style}
+              setSizeForWindowing={setSizeForWindowing}
+              hasComputedSize={Boolean(sizeMap[index])}
+            />
+          )
+        }}
+      </List>
+    );
+  };
+
+  if (!infiniteLoading) {
+    return renderVirtualizedList({
+      ref: listRef,
+    });
+  }
+
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
@@ -91,47 +145,27 @@ const TableBody = ({
       loadMoreItems={loadMoreItems}
     >
       {({ onItemsRendered, ref }) => {
-        return (
-          <List
-            ref={el => {
-              listRef.current = el;
-              ref(el);
-            }}
-            height={240}
-            itemCount={totalRowCount}
-            itemSize={(idx) => sizeMap[idx] || 50}
-            onItemsRendered={onItemsRendered}
-            width="100%"
-          >
-            {({ index, style }) => {
-              // if row is not loaded yet, render placeholder
-              if ( index >= rows.length ) {
-                return (
-                  <LoadingTableRow
-                    reactWindowStyleObj={style}
-                  />
-                );
-              }
-
-              const row = rows[index];
-              return (
-                <TableRow
-                  row={row}
-                  columns={columns}
-                  selectCell={selectCell}
-                  onRowClick={onRowClick}
-                  rowIndex={index}
-                  reactWindowStyleObj={style}
-                  setSizeForWindowing={setSizeForWindowing}
-                  hasComputedSize={Boolean(sizeMap[index])}
-                />
-              )
-            }}
-          </List>
-        );
+        return renderVirtualizedList({
+          ref: el => {
+            listRef.current = el;
+            ref(el);
+          },
+          onItemsRendered,
+        });
       }}
     </InfiniteLoader>
   );
+};
+
+TableBody.propTypes = {
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectCell: PropTypes.elementType.isRequired,
+  onRowClick: PropTypes.func,
+  infiniteLoading: PropTypes.bool.isRequired,
+  totalRowCount: PropTypes.number.isRequired,
+  loadMoreData: PropTypes.func,
+  pageSize: PropTypes.number,
 };
 
 export default TableBody;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const LoadingTableRow = ({
   reactWindowStyleObj,
@@ -14,6 +15,10 @@ const LoadingTableRow = ({
       </div>
     </div>
   );
+};
+
+LoadingTableRow.propTypes = {
+  reactWindowStyleObj: PropTypes.object.isRequired,
 };
 
 export default LoadingTableRow;

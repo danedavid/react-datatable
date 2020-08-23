@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import TableHeader from './TableHeader';
@@ -111,12 +112,35 @@ const DataTable = ({
         rows={rows}
         selectCell={SelectCell}
         onRowClick={onRowClick}
-        totalRowCount={totalRowCount}
+        infiniteLoading={Boolean(totalRowCount && loadMoreData && pageSize)}
+        totalRowCount={totalRowCount || rows.length}
         loadMoreData={loadMoreData}
         pageSize={pageSize}
       />
     </div>
   );
+};
+
+DataTable.propTypes = {
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectable: PropTypes.bool,
+  selectedKeys: PropTypes.arrayOf(PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ])),
+  onSelectionChange: PropTypes.func,
+  onRowClick: PropTypes.func,
+  infiniteLoading: PropTypes.shape({
+    totalRowCount: PropTypes.number,
+    loadMoreData: PropTypes.func,
+    pageSize: PropTypes.number,
+  }),
+};
+
+DataTable.defaultProps = {
+  selectable: false,
+  infiniteLoading: {},
 };
 
 export default DataTable;
