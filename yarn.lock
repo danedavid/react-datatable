@@ -8940,6 +8940,11 @@ react-scripts@3.4.3:
   optionalDependencies:
     fsevents "2.1.2"
 
+react-window-infinite-loader@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-window-infinite-loader/-/react-window-infinite-loader-1.0.5.tgz#6fe094d538a88978c2c9b623052bc50cb28c2abc"
+  integrity sha512-IcPIq8lADK3zsAcqoLqQGyduicqR6jWkiK2VUX5sKSI9X/rou6OWlOEexnGyujdNTG7hSG8OVBFEhLSDs4qrxg==
+
 react-window@^1.8.5:
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.8.5.tgz#a56b39307e79979721021f5d06a67742ecca52d1"

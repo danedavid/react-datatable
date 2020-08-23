@@ -1,3 +1,12 @@
+@keyframes wave {
+  0%, 40%, 100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(0, -15px);
+  }
+}
+
 .dt-table {
   background-color: white;
   border-radius: 2px;
@@ -31,6 +40,31 @@
 
     &.dt-row--clickable:hover {
       background-color: #f0f0f0;
+    }
+
+    &.dt-row--loading {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 0.5px solid #e0e0e0;
+
+      .dt-loading-span {
+        transition: all 6000ms ease;
+        background: rgba(0,0,0,0.5);
+        height: 4px;
+        width: 4px;
+        margin-right: 2px;
+        display: inline-block;
+        border-radius: 50%;
+        animation: wave 1.2s ease infinite;
+
+        @for $i from 0 through 2 {
+          &:nth-child(#{$i + 1}) {
+            animation-delay: 100ms * $i;
+          }
+        }
+      }
     }
   }
 }

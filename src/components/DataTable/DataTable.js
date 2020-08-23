@@ -15,6 +15,11 @@ const DataTable = ({
   selectedKeys,
   onSelectionChange,
   onRowClick,
+  infiniteLoading: {
+    totalRowCount,
+    loadMoreData,
+    pageSize,
+  }
 }) => {
   const hasPixelWidthValues = useMemo(
     () => columns.some((column) => (
@@ -35,7 +40,7 @@ const DataTable = ({
         <div className="dt-cell dt-header-cell dt-cell--select">
           <input
             type="checkbox"
-            checked={selectedKeys.length === rows.length}
+            checked={rows.length > 0 && selectedKeys.length === rows.length}
             onClick={(ev) => ev.stopPropagation()}
             onChange={(ev) => {
               onSelectionChange(
@@ -106,6 +111,9 @@ const DataTable = ({
         rows={rows}
         selectCell={SelectCell}
         onRowClick={onRowClick}
+        totalRowCount={totalRowCount}
+        loadMoreData={loadMoreData}
+        pageSize={pageSize}
       />
     </div>
   );
