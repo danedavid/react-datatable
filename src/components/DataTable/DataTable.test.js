@@ -13,6 +13,7 @@ configure({ adapter: new Adapter() });
 
 const renderShallow = ({
   onRowClick,
+  onSelectionChange,
 } = {}) => shallow(
   <DataTable
     columns={[{
@@ -30,6 +31,8 @@ const renderShallow = ({
       title: 'Suspendisse ut leo',
     }]}
     onRowClick={onRowClick}
+    onSelectionChange={onSelectionChange}
+    selectable={Boolean(onSelectionChange)}
   />
 );
 
@@ -90,5 +93,36 @@ describe('<DataTable />', () => {
     tableRow.dive().find('.dt-row--clickable').simulate('click');
     expect(mockFn).toHaveBeenCalled();
     expect(mockFn).toHaveBeenCalledTimes(1);
+  });
+
+  it('rows must be selectable when selectable is true', () => {
+    const wrapper = renderShallow();
+    const staticTable = wrapper.render();
+    expect(staticTable.find('.dt-cell--select').length).toBe(0);
+
+    const mockFn = jest.fn();
+    const wrapperWithSelect = renderShallow({
+      onSelectionChange: mockFn,
+    });
+    const staticTableWithSelect = wrapperWithSelect.render();
+    expect(staticTableWithSelect.find('.dt-cell--select').length).toBe(3);
+
+    const tableBody = wrapperWithSelect.find(TableBody);
+    const reactWindowList = tableBody.dive().find(List);
+    const tableRow = reactWindowList.renderProp('children')({
+      index: 0,
+      style: {},
+    });
+    const SelectCell = tableRow.props().selectCell;
+    const rowId = tableRow.props().row[tableRow.props().rowKey];
+
+    tableRow.dive()
+      .find(SelectCell)
+      .dive()
+      .find('input[type="checkbox"]')
+      .simulate('change', { target: { checked: true } });
+
+    expect(mockFn).toHaveBeenCalled();
+    expect(mockFn).toHaveBeenCalledWith([rowId]);
   });
 });
