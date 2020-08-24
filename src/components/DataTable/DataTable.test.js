@@ -11,25 +11,29 @@ import { VariableSizeList as List } from 'react-window';
 
 configure({ adapter: new Adapter() });
 
+const columns = [{
+  key: 'id',
+  label: 'ID',
+}, {
+  key: 'name',
+  label: 'Name',
+}];
+
+const data = [{
+  id: 1,
+  name: 'Lorem Ipsum',
+}, {
+  id: 2,
+  title: 'Suspendisse ut leo',
+}];
+
 const renderShallow = ({
   onRowClick,
   onSelectionChange,
 } = {}) => shallow(
   <DataTable
-    columns={[{
-      key: 'id',
-      label: 'ID',
-    }, {
-      key: 'name',
-      label: 'Name',
-    }]}
-    rows={[{
-      id: 1,
-      name: 'Lorem Ipsum',
-    }, {
-      id: 2,
-      title: 'Suspendisse ut leo',
-    }]}
+    columns={columns}
+    rows={data}
     onRowClick={onRowClick}
     onSelectionChange={onSelectionChange}
     selectable={Boolean(onSelectionChange)}
@@ -124,5 +128,26 @@ describe('<DataTable />', () => {
 
     expect(mockFn).toHaveBeenCalled();
     expect(mockFn).toHaveBeenCalledWith([rowId]);
+  });
+
+  it('rows must be virtualized', () => {
+    const largeData = [];
+    for ( let i = 0; i < 10000; i++ ) {
+      largeData.push(...data.map(item => ({
+        ...item,
+        id: item.id + i,
+      })));
+    }
+
+    const wrapper = shallow(
+      <DataTable
+        columns={columns}
+        rows={largeData}
+      />
+    );
+
+    const staticTable = wrapper.render();
+    expect(largeData.length).toBe(20000);
+    expect(staticTable.find('.dt-row').length < 100).toBe(true);
   });
 });
