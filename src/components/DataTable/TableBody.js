@@ -171,7 +171,7 @@ TableBody.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
   rowKey: PropTypes.string.isRequired,
   selectCell: PropTypes.elementType.isRequired,
-  onRowClick: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func,
   infiniteLoading: PropTypes.bool.isRequired,
   totalRowCount: PropTypes.number.isRequired,
   loadMoreData: PropTypes.func,
@@ -182,6 +182,7 @@ TableBody.propTypes = {
 TableBody.defaultProps = {
   loadMoreData: () => {},
   pageSize: 1, // to prevent possible divide by zero issue
+  onRowClick: null,
 };
 
 export default TableBody;

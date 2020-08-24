@@ -24,7 +24,7 @@
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
-    "lint": "eslint --fix .",
+    "lint": "eslint --fix --ext .js src/",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },

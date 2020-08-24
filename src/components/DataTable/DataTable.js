@@ -200,7 +200,7 @@ DataTable.defaultProps = {
   height: 500,
   selectedKeys: [],
   onSelectionChange: () => {},
-  onRowClick: () => {},
+  onRowClick: null,
 };
 
 export default DataTable;

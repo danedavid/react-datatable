@@ -33,6 +33,12 @@ const TableRow = ({
     }
   }, [hasComputedSize, setSizeForWindowing, rowIndex]);
 
+  const clickableProps = {};
+  if (onRowClick) {
+    clickableProps.onClick = () => onRowClick(row, rowIndex);
+    clickableProps.tabIndex = 0;
+  }
+
   return (
     <div style={reactWindowStyleObj} role="none">
       {/*
@@ -47,11 +53,9 @@ const TableRow = ({
           'dt-row': true,
           'dt-row--clickable': Boolean(onRowClick),
         })}
-        onClick={() => {
-          onRowClick(row, rowIndex);
-        }}
         role="row"
-        tabIndex={0}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...clickableProps}
       >
         <SelectCell rowId={rowId} />
         {
@@ -93,10 +97,14 @@ TableRow.propTypes = {
   selectCell: PropTypes.elementType.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   reactWindowStyleObj: PropTypes.object.isRequired,
-  onRowClick: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func,
   rowIndex: PropTypes.number.isRequired,
   setSizeForWindowing: PropTypes.func.isRequired,
   hasComputedSize: PropTypes.bool.isRequired,
+};
+
+TableRow.defaultProps = {
+  onRowClick: null,
 };
 
 export default TableRow;
