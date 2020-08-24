@@ -12,19 +12,19 @@ React table component for data at scale. Supports virtualization and infinite sc
     setSelectedKeys(selection);
   }}
   columns={[{
-      key: 'id',
-      label: 'ID',
-    }, {
-      key: 'title',
-      label: 'Title',
-    }, {
-      key: 'url',
-      label: 'URL',
-    }, {
-      key: 'albumId',
-      label: 'Album ID',
-      numeric: true,
-    }]}
+    key: 'id',
+    label: 'ID',
+  }, {
+    key: 'title',
+    label: 'Title',
+  }, {
+    key: 'url',
+    label: 'URL',
+  }, {
+    key: 'albumId',
+    label: 'Album ID',
+    numeric: true,
+  }]}
   rows={[{
     id: 1,
     title: 'Lorem Ipsum',
