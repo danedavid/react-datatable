@@ -11,7 +11,9 @@ import { VariableSizeList as List } from 'react-window';
 
 configure({ adapter: new Adapter() });
 
-const renderShallow = () => shallow(
+const renderShallow = ({
+  onRowClick,
+} = {}) => shallow(
   <DataTable
     columns={[{
       key: 'id',
@@ -27,6 +29,7 @@ const renderShallow = () => shallow(
       id: 2,
       title: 'Suspendisse ut leo',
     }]}
+    onRowClick={onRowClick}
   />
 );
 
@@ -64,5 +67,28 @@ describe('<DataTable />', () => {
 
     const staticList = reactWindowList.render();
     expect(staticList.find('.dt-row').length).toBe(2);
+  });
+
+  it('rows must be clickable when onRowClick is passed', () => {
+    const wrapper = renderShallow();
+    const staticTable = wrapper.render();
+    expect(staticTable.find('.dt-row--clickable').length).toBe(0);
+
+    const mockFn = jest.fn();
+    const wrapperWithClick = renderShallow({
+      onRowClick: mockFn,
+    });
+    const staticTableWithClick = wrapperWithClick.render();
+    expect(staticTableWithClick.find('.dt-row--clickable').length).not.toBe(0);
+
+    const tableBody = wrapperWithClick.find(TableBody);
+    const reactWindowList = tableBody.dive().find(List);
+    const tableRow = reactWindowList.renderProp('children')({
+      index: 0,
+      style: {},
+    });
+    tableRow.dive().find('.dt-row--clickable').simulate('click');
+    expect(mockFn).toHaveBeenCalled();
+    expect(mockFn).toHaveBeenCalledTimes(1);
   });
 });
