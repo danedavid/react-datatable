@@ -1,68 +1,92 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# react-datatable
 
-## Available Scripts
+React table component for data at scale. Supports virtualization and infinite scroll.
 
-In the project directory, you can run:
+## `<DataTable />` Usage
 
-### `yarn start`
+```jsx
+<DataTable
+  selectable
+  selectedKeys={selectedKeys}
+  onSelectionChange={(selection) => {
+    setSelectedKeys(selection);
+  }}
+  columns={[{
+      key: 'id',
+      label: 'ID',
+    }, {
+      key: 'title',
+      label: 'Title',
+    }, {
+      key: 'url',
+      label: 'URL',
+    }, {
+      key: 'albumId',
+      label: 'Album ID',
+      numeric: true,
+    }]}
+  rows={[{
+    id: 1,
+    title: 'Lorem Ipsum',
+    url: (
+      <a href="http://www.example.com/1">
+        Link 1
+      </a>
+    ),
+    albumId: 68,
+  }, {
+    id: 2,
+    title: 'Suspendisse ut leo',
+    url: (
+      <a href="http://www.example.com/2">
+        Link 2
+      </a>
+    ),
+    albumId: 72,
+  }]}
+  onRowClick={(rowData, rowIndex) => {
+    console.log(rowData, rowIndex);
+  }}
+  infiniteLoading={{
+    loadMoreData: async (pageNo) => {
+      const res = await fetchData(pageNo);
+      // set data in state
+    },
+    pageSize: 50,
+    totalRowCount: 10000,
+  }}
+/>
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## `<DataTable />` API
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| columns | object[] | [] | Columns definition for the table. See Column Props |
+| rows | object[] | [] | Data rows for the table, having keys specified in `columns`. Values can be of type string, number or `ReactNode` |
+| rowKey | string \| number | 'id' | The key that will be used to uniquely identify each row |
+| height | number | 500 | Height of table |
+| selectable | boolean | false | Whether table rows are selectable. If true, checkboxes will be rendered for each row |
+| selectedKeys | string[] \| number[] | [] | List of selected keys |
+| onSelectionChange | `(selectedKeys: string[]) => void` | noop | Callback executed when select/deselect rows |
+| onRowClick | `(rowData: object, rowIndex: number) => void` | noop | Callback executed when a row is clicked |
+| infiniteLoading | object | {} | See Infinite Loading props |
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Column Props
 
-### `yarn build`
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| key | string | - | Object key to look up in `rows` |
+| label | string | - | Column header text |
+| numeric | boolean | false | If true, text in that column will be right aligned |
+| width | string | - | Width of columns. Eg: `'10px', '20%'` |
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+#### Infinite Loading Props
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| totalRowCount | number | - | Total no. of rows in the remote source. If unknown initially some arbitrarily large number can be provided |
+| pageSize | number | - | No. of rows in one page/batch |
+| loadMoreData | `(pageNo: number) => void` | - | Callback will be invoked on scrolling down to pages not loaded yet, with page number. Make the data fetch from this function. |
